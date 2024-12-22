@@ -17,60 +17,40 @@ import javax.swing.JMenuItem;
 public class Interfaz implements ActionListener {
 	public JFrame editor;
 	public JMenuBar mnuBarra;
-	public JMenu mnuArchivo, mnuEdicion, mnuOpciones, mnuAyuda;
+	//public JMenu mnuArchivo, mnuEdicion, mnuOpciones, mnuAyuda;
+	public JMenu mnuListadoOpciones[]; // Menú general
 	// Menú Archivo
-	public JMenuItem mnuNuevo, mnuAbrir, mnuGuardar, mnuGuardarC, mnuImprimir, mnuSalir;	
+	//public JMenuItem mnuNuevo, mnuAbrir, mnuGuardar, mnuGuardarC, mnuImprimir, mnuSalir;
+	// Opciones de menú
+	public JMenuItem mnuArchivo[], mnuEdicion[], mnuOpciones[], mnuAyuda[], mnuLenguajes[];
 	// Fin menú archivo
 	// Menú Edición
-	public JMenuItem mnuCortar, mnuCopiar, mnuPegar;	
+	//public JMenuItem mnuCortar, mnuCopiar, mnuPegar;	
 	// Fin menú edición
 	
 	// Menú Opciones
-	public JMenu mnuLenguaje;
-	public JMenuItem mnuLenguajes[]; // Arreglo de distintas opciones
+	//public JMenu mnuLenguaje;
+	//public JMenuItem mnuLenguajes[]; // Arreglo de distintas opciones
 	// Fin menú opciones
 	
 	// Menú Ayuda
-	public JMenuItem mnuContenido, mnuAcerca;	
+	//public JMenuItem mnuContenido, mnuAcerca;	
 	// Fin menú ayuda
 	
 	public static final String titulo = "Editor de Texto Múltiple";
 	public static final String version = "0.1";
 	
-	// Textos para los menús
-	// Menú Archivo
-	public static final String MNU_ARCHIVO = "Archivo";
-	public static final String MNU_ARCHIVO_NUEVO = "Nuevo";
-	public static final String MNU_ARCHIVO_ABRIR = "Abrir";
-	public static final String MNU_ARCHIVO_GUARDAR = "Guardar";
-	public static final String MNU_ARCHIVO_GUARDARC = "Guardar como";
-	public static final String MNU_ARCHIVO_IMPRIMIR = "Imprimir";
-	public static final String MNU_ARCHIVO_SALIR = "Salir";	
+	// Opciones generales del menú
+	public static final String opcionesMenu[] = {"Archivo", "Edición", "Opciones", "Ayuda"};
+	public static final String menuArchivo[] = {"Nuevo","Abrir","Guardar","Guardar como","Imprimir","-","Salir"};
+	public static final String menuEdicion[] = {"Cortar","Copiar","Pegar","Deshacer","Rehacer"};
+	public static final String menuOpciones[] = {"Lenguajes","-", "Opciones"};
+	public static final String menuAyuda[] = {"Contenido", "-", "Acerca de"};
 
-	// Fin Menú Archivo
-	
-	// Menú Edición	
-	public static final String MNU_EDICION = "Edición";
-	public static final String MNU_EDICION_CORTAR = "Cortar";
-	public static final String MNU_EDICION_COPIAR = "Copiar";
-	public static final String MNU_EDICION_PEGAR = "Pegar";
-	public static final String MNU_EDICION_DESHACER = "Deshacer";
-	public static final String MNU_EDICION_REHACER = "Rehacer";
-	// Fin Menú Edición
-	
-	
-	// Menú Opciones	
-	public static final String MNU_OPCIONES = "Opciones";
-	public static final String MNU_OPCIONES_LENGUAJE = "Lenguaje";
 	public static final String MNU_OPCIONES_LENGUAJES[] = {"Java", "C/C++", "Python", "JavaScript"};
-	// Fin Menú Edición
-	
-	// Menú Opciones	
-	public static final String MNU_AYUDA = "Ayuda";
-	public static final String MNU_AYUDA_CONTENIDO = "Contenido";
-	public static final String MNU_AYUDA_ACERCA = "Acerca de...";
+
 	public static final String ACERCA =
-			"Desarrollado por: Gabriel Eduardo Morejón López\ngabrielmorejon@gmail.com\nGitHub: elgabo82\nhttps://www.grupofmo.com\n2024";
+			"Desarrollado por: Gabriel Eduardo Morejón López\ngabrielmorejon@gmail.com\ngabriel.morejon@utm.edu.ec\nGitHub: elgabo82\nhttps://www.grupofmo.com\n2024";
 	// Fin Menú Edición	
 	
 	public static int ALTO = 600;
@@ -102,87 +82,88 @@ public class Interfaz implements ActionListener {
 	
 	public void crearBarraMenu() { // Crea la barra de menú
 		mnuBarra = new JMenuBar();
-		mnuArchivo = new JMenu();
-		mnuEdicion = new JMenu();
-		mnuOpciones = new JMenu();
-		mnuAyuda = new JMenu();
+		//mnuListadoOpciones - Arreglo con opciones de la barra
+		mnuListadoOpciones = new JMenu[opcionesMenu.length];		
 		
-		mnuBarra.add(mnuArchivo);
-		mnuBarra.add(mnuEdicion);
-		mnuBarra.add(mnuOpciones);
-		mnuBarra.add(mnuAyuda);		
+		//opcionesMenu - Arreglo del listado		
+		for (int i=0; i<opcionesMenu.length; i++) {
+			mnuListadoOpciones[i] = new JMenu();
+			mnuListadoOpciones[i].setText(opcionesMenu[i]);
+			mnuBarra.add(mnuListadoOpciones[i]);
+		}
+		
 		editor.setJMenuBar(mnuBarra);
 	}
 	
 	public void crearMenuArchivo() { // Menú Archivo		
-		mnuNuevo = new JMenuItem();	
-		mnuAbrir = new JMenuItem();
-		mnuGuardar = new JMenuItem();
-		mnuGuardarC = new JMenuItem();
-		mnuImprimir = new JMenuItem();
-		mnuSalir = new JMenuItem();
-		
-		mnuArchivo.setText(MNU_ARCHIVO);
-		mnuNuevo.setText(MNU_ARCHIVO_NUEVO);		
-		mnuAbrir.setText(MNU_ARCHIVO_ABRIR);
-		mnuGuardar.setText(MNU_ARCHIVO_GUARDAR);
-		mnuGuardarC.setText(MNU_ARCHIVO_GUARDARC);
-		mnuImprimir.setText(MNU_ARCHIVO_IMPRIMIR);
-		mnuSalir.setText(MNU_ARCHIVO_SALIR);
-		
-		mnuArchivo.add(mnuNuevo);
-		mnuArchivo.add(mnuAbrir);
-		mnuArchivo.add(mnuGuardar);
-		mnuArchivo.add(mnuGuardarC);
-		mnuArchivo.add(mnuImprimir);
-		mnuArchivo.addSeparator();
-		mnuArchivo.add(mnuSalir);		
+		mnuArchivo = new JMenuItem[menuArchivo.length];
+		for (int i=0; i<menuArchivo.length; i++) {			
+			mnuArchivo[i] = new JMenuItem();
+			mnuArchivo[i].setText(menuArchivo[i]);
+			
+			if (menuArchivo[i].contains("-")) { // Agrega un separador		
+				mnuListadoOpciones[0].addSeparator();						
+			} else {				
+				mnuListadoOpciones[0].add(mnuArchivo[i]);
+			}			
+		}
 	}
 	
-	public void crearMenuEdicion() { // Menú Edición		
-		mnuCortar = new JMenuItem();	
-		mnuCopiar = new JMenuItem();
-		mnuPegar = new JMenuItem();		
-		
-		mnuEdicion.setText(MNU_EDICION);
-		mnuCortar.setText(MNU_EDICION_CORTAR);	
-		mnuCopiar.setText(MNU_EDICION_COPIAR);
-		mnuPegar.setText(MNU_EDICION_PEGAR);		
-		
-		mnuEdicion.add(mnuCortar);
-		mnuEdicion.add(mnuCopiar);
-		mnuEdicion.add(mnuPegar);
-				
+	public void crearMenuEdicion() { // Menú Edición
+		mnuEdicion = new JMenuItem[menuEdicion.length];
+		for (int i=0; i<menuEdicion.length; i++) {
+			mnuEdicion[i] = new JMenuItem();
+			mnuEdicion[i].setText(menuEdicion[i]);
+			if (menuEdicion[i].contains("-")) { // Agrega un separador
+				mnuListadoOpciones[1].addSeparator();
+			} else {				
+				mnuListadoOpciones[1].add(mnuEdicion[i]);
+			}
+		}		
 	}
 	
 	public void crearMenuOpciones() { // Menú Opciones		
-		mnuLenguaje = new JMenu();
-		
-		mnuOpciones.setText(MNU_OPCIONES);
-		mnuLenguaje.setText(MNU_OPCIONES_LENGUAJE);
+		mnuOpciones = new JMenuItem[menuOpciones.length];
 		mnuLenguajes = new JMenuItem[MNU_OPCIONES_LENGUAJES.length];
 		
-		for (int i=0; i<MNU_OPCIONES_LENGUAJES.length; i++) {			
-			mnuLenguajes[i] = new JMenuItem();
-			mnuLenguajes[i].setText(MNU_OPCIONES_LENGUAJES[i]);
-			mnuLenguaje.add(mnuLenguajes[i]);
-			// Agregar ActionListener
-		}		
-		
-		mnuOpciones.add(mnuLenguaje);				
+		for (int i=0; i<menuOpciones.length; i++) {			
+			if (menuOpciones[i].contains("-")) {
+				mnuListadoOpciones[2].addSeparator();
+			} else if (i==0) { // Agrega los elementos del sub-menú Lenguajes
+				mnuOpciones[i] = new JMenu();
+				
+				for (int j=0; j<MNU_OPCIONES_LENGUAJES.length; j++) {			
+					mnuLenguajes[j] = new JMenuItem();
+					mnuLenguajes[j].setText(MNU_OPCIONES_LENGUAJES[j]);
+					mnuOpciones[i].add(mnuLenguajes[j]);
+					mnuOpciones[i].setText(menuOpciones[i]);
+					mnuListadoOpciones[2].add(mnuOpciones[i]);
+					// Agregar ActionListener
+				}			 
+				
+			} else {
+				mnuOpciones[i] = new JMenuItem();
+				mnuOpciones[i].setText(menuOpciones[i]);
+				mnuListadoOpciones[2].add(mnuOpciones[i]);
+			}
+			
+			
+		}				
 	}		
 	
 	public void crearMenuAyuda() { // Menú Ayuda		
-		mnuContenido = new JMenuItem();
-		mnuAcerca = new JMenuItem();			
-		
-		mnuAyuda.setText(MNU_AYUDA);
-		mnuContenido.setText(MNU_AYUDA_CONTENIDO);		
-		mnuAcerca.setText(MNU_AYUDA_ACERCA);		
-		
-		
-		mnuAyuda.add(mnuContenido);
-		mnuAyuda.add(mnuAcerca);	
+		mnuAyuda = new JMenuItem[menuAyuda.length];
+		for (int i=0; i<menuAyuda.length; i++) {
+			mnuAyuda[i] = new JMenuItem();
+			mnuAyuda[i].setText(menuAyuda[i]);
+			
+			if (menuAyuda[i].contains("-")) { // Agrega un separador		
+				mnuListadoOpciones[3].addSeparator();						
+			} else {				
+				mnuListadoOpciones[3].add(mnuAyuda[i]);
+			}			
+			
+		}	
 	}
 
 
