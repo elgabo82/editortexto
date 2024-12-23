@@ -18,6 +18,7 @@ import javax.swing.KeyStroke;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.StyledDocument;
 
+import es.Archivos;
 import sintaxis.Analizador;
 
 /*
@@ -38,16 +39,23 @@ public class Interfaz implements ActionListener {
 	public StyledDocument documento;
 	public Analizador resaltador;
 	
+	public Archivos archivo;
+	
 	// Opciones de menús
 	public JMenuItem mnuArchivo[], mnuEdicion[], mnuOpciones[], mnuAyuda[], mnuLenguajes[];
 	
 	public static final String titulo = "Editor de Texto Múltiple";
 	public static final String version = "0.1";
 	
+	public static final String SELECCIONAR_ARCHIVO = "Debe seleccionar un archivo.";
+	public static final String ERROR_ARCHIVO = "Ocurrió un error.";
+	public static final String NOMBRE_ARCHIVO = "Escoja un nombre de archivo.";
+	public static final String CONFIRMAR_SALIR = "¿Desea salir?";
+	
 	// Opciones generales de los menús
 	public static final String opcionesMenu[] = { "Archivo", "Edición", "Opciones", "Ayuda" };
 	public static final String menuArchivo[] = { "Nuevo","Abrir","Guardar","Guardar como","Imprimir","-","Salir" };
-	public static final String atajosArchivo[] = { "N", "A", "G", "M", "I", "L" };
+	public static final String atajosArchivo[] = { "N", "O", "G", "M", "I", "L" };
 	public static final String menuEdicion[] = { "Cortar","Copiar","Pegar","Deshacer","Rehacer" };
 	public static final String atajosEdicion[] = { "X", "C", "V", "Z", "U" };
 	public static final String menuOpciones[] = { "Lenguajes", "Interfaz", "-", "Opciones" };
@@ -90,7 +98,8 @@ public class Interfaz implements ActionListener {
 		//editor.setLayout(null);
 		editor.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		editor.setResizable(true);
-		editor.setLocationRelativeTo(null);		
+		editor.setLocationRelativeTo(null);
+		archivo = new Archivos(this);
 	}
 	
 	public void crearBarraMenu() { // Crea la barra de menú
@@ -230,18 +239,18 @@ public class Interfaz implements ActionListener {
 		String comando = e.getActionCommand();
 		
 		if (e.getActionCommand().contains(menuArchivo[0])) { // Nuevo
-					
+			archivo.nuevoArchivo();
 		}
 		
 		if (e.getActionCommand().contains(menuArchivo[1])) { // Abrir
-			
+			archivo.abrirArchivo();
 		}
 		
 		if (e.getActionCommand().contains(menuArchivo[2])) { // Guardar
-			
+			archivo.guardarArchivo();
 		}
 		if (e.getActionCommand().contains(menuArchivo[3])) { // Guardar como
-			
+			archivo.guardarComo();
 		}
 		
 		if (e.getActionCommand().contains(menuArchivo[4])) { // Imprimir
@@ -249,7 +258,7 @@ public class Interfaz implements ActionListener {
 		}
 		
 		if (e.getActionCommand().contains(menuArchivo[6])) { // Salir
-			
+			archivo.salir();
 		}
 		
 		if (e.getActionCommand().contains(MNU_OPCIONES_INTERFAZ[0])) {
