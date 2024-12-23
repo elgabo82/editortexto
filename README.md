@@ -5,6 +5,14 @@ Desarrollado por: Gabriel Eduardo Morejón López
 
 - Hecho usando Java 17
 
+## Características del proyecto
+### Paquetes:
+- editor - Clase principal
+- es - Operaciones de Entrada/Salida (Gestión de archivos)
+- interfaz - Clases para la gestión de la interfaz
+- resources - Imágenes, iconos
+
+# Todavía en desarollo...
 ### Lenguajes soportados
 - Java
 - C/C++
