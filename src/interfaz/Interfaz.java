@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JFrame;
@@ -17,6 +18,7 @@ import javax.swing.JTextPane;
 import javax.swing.KeyStroke;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.StyledDocument;
+import javax.swing.text.Utilities;
 
 import es.Archivos;
 import sintaxis.Analizador;
@@ -221,16 +223,50 @@ public class Interfaz implements ActionListener {
 		panelTexto = new JScrollPane(areaTexto,
 				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		//panelTexto.setFont(new Font("Monospaced", Font.PLAIN, 14));
+
 		documento = areaTexto.getStyledDocument();
-		//if (this.lenguaje.contains("Java") || this.lenguaje.contains("C/C++")) {
-			panelTexto.setFont(new Font("Monospaced", Font.BOLD, 24));
+
+		panelTexto.setFont(new Font("Monospaced", Font.BOLD, 24));
+	
+		resaltador = new Analizador(documento, this.lenguaje, this.tema);
+		areaTexto.getDocument().addDocumentListener(resaltador);
 		
-			resaltador = new Analizador(documento, this.lenguaje, this.tema);
-			areaTexto.getDocument().addDocumentListener(resaltador);
-		//}
+		areaTexto.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					identacion(areaTexto);
+					e.consume();
+				}
+			}
+		});
 		
 		editor.add(panelTexto, BorderLayout.CENTER);
+	}
+	
+	public static void identacion(JTextPane panelTexto) {
+		try {
+            StyledDocument doc = panelTexto.getStyledDocument();
+            int caretPosition = panelTexto.getCaretPosition();
+
+            // Obtiene el texto de la línea actual.
+            int inicioLinea = Utilities.getRowStart(panelTexto, caretPosition);
+            String lineaActual = doc.getText(inicioLinea, caretPosition - inicioLinea);
+
+            // Calcula la identación (espacios/tabulador)
+            String espaciosEnBlanco = lineaActual.replaceAll("\\S.*", "");
+
+            // Revisa las llaves o las palabras reservadas para iniciar la identación
+            if (lineaActual.trim().endsWith("{") || lineaActual.trim().matches(".*\\b(if|else|for|while|switch|try)\\b.*")) {
+                espaciosEnBlanco += "    "; // Add one level of indentation
+            }
+
+            // Insert new line with appropriate indentation
+            doc.insertString(caretPosition, "\n" + espaciosEnBlanco, null);
+            panelTexto.setCaretPosition(caretPosition + 1 + espaciosEnBlanco.length());
+        } catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	
